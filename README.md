@@ -25,6 +25,6 @@ The system takes user input like occasion, color preference, and style, and sugg
 * Add image-based outfit detection
 * Mobile app version
 
-## 👨‍💻 Author
+This project is part of my exploration in AI-based personalized systems.
 
 Gautham
