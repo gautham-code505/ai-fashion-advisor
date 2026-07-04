@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="flex flex-col items-center justify-center py-20 text-center gap-6">
+    <span class="material-symbols-outlined text-[80px] text-error">error</span>
+    <h1 class="text-display-lg font-display-lg text-primary">Oops!</h1>
+    <p class="text-body-lg text-on-surface-variant">Something went wrong while curating your style.</p>
+    <a href="{{ url_for('home') }}" class="bg-primary-container text-on-primary px-8 py-3 rounded-lg font-label-md hover:opacity-90 transition-opacity mt-4">
+        Go Back Home
+    </a>
+</div>
+{% endblock %}

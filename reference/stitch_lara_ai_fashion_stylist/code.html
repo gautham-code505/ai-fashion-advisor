@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LARA – AI Fashion Advisor</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Montserrat:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed-dim": "#c6c4df",
+                        "on-secondary-container": "#5d4a82",
+                        "on-background": "#1a1c1b",
+                        "error-container": "#ffdad6",
+                        "secondary-container": "#d5bfff",
+                        "on-error": "#ffffff",
+                        "inverse-on-surface": "#f1f1ef",
+                        "secondary-fixed": "#ebddff",
+                        "on-surface": "#1a1c1b",
+                        "on-tertiary-container": "#91826d",
+                        "secondary": "#67558d",
+                        "surface-tint": "#5d5c74",
+                        "surface-container": "#efeeec",
+                        "secondary-fixed-dim": "#d2bcfc",
+                        "surface-variant": "#e3e2e0",
+                        "on-surface-variant": "#47464c",
+                        "background": "#faf9f7",
+                        "error": "#ba1a1a",
+                        "primary-fixed": "#e2e0fc",
+                        "on-primary-fixed-variant": "#45455b",
+                        "on-tertiary-fixed-variant": "#514534",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed": "#f2e0c8",
+                        "surface-container-high": "#e9e8e6",
+                        "on-secondary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f4f3f1",
+                        "surface": "#faf9f7",
+                        "outline": "#78767d",
+                        "surface-dim": "#dadad8",
+                        "on-primary-container": "#83829b",
+                        "tertiary-fixed-dim": "#d6c4ad",
+                        "primary-container": "#1a1a2e",
+                        "surface-bright": "#faf9f7",
+                        "outline-variant": "#c8c5cd",
+                        "on-primary-fixed": "#1a1a2e",
+                        "surface-container-highest": "#e3e2e0",
+                        "on-tertiary-fixed": "#231a0c",
+                        "on-secondary-fixed": "#230f45",
+                        "inverse-primary": "#c6c4df",
+                        "tertiary": "#010000",
+                        "on-secondary-fixed-variant": "#4f3d73",
+                        "tertiary-container": "#231a0c",
+                        "on-primary": "#ffffff",
+                        "inverse-surface": "#2f3130",
+                        "primary": "#00000b",
+                        "on-tertiary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "20px",
+                        "container-max": "1440px",
+                        "unit-sm": "8px",
+                        "unit-xl": "48px",
+                        "unit-md": "16px",
+                        "unit-xs": "4px",
+                        "margin-desktop": "80px",
+                        "gutter": "24px",
+                        "unit-lg": "24px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["Inter"],
+                        "headline-lg-mobile": ["Montserrat"],
+                        "body-md": ["Inter"],
+                        "headline-lg": ["Montserrat"],
+                        "label-sm": ["Inter"],
+                        "headline-md": ["Montserrat"],
+                        "display-lg": ["Montserrat"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-md": ["14px", { "lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "1.2", "fontWeight": "500" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(250, 249, 247, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(227, 226, 224, 0.5);
+        }
+        .ai-gradient-border {
+            position: relative;
+        }
+        .ai-gradient-border::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 2px;
+            background: linear-gradient(135deg, #d2bcfc, #f2e0c8);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+        .ambient-shadow {
+            box-shadow: 0 10px 40px rgba(26, 26, 46, 0.04);
+        }
+        
+        #mobile-menu {
+            display: none;
+        }
+        #mobile-menu.open {
+            display: flex;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased pt-20">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 px-margin-mobile md:px-margin-desktop h-20 max-w-container-max mx-auto bg-surface shadow-sm flex flex-col justify-center">
+<div class="flex justify-between items-center w-full">
+<div class="text-headline-md font-headline-md font-bold tracking-tight text-primary">LARA</div>
+<div class="hidden md:flex gap-unit-lg items-center">
+<a class="text-primary font-label-md font-bold border-b-2 border-primary pb-1 opacity-80 transition-all hover:text-primary transition-colors duration-300" href="#">Home</a>
+<a class="text-on-surface-variant font-label-md hover:text-primary transition-colors duration-300" href="#">Collections</a>
+<a class="text-on-surface-variant font-label-md hover:text-primary transition-colors duration-300" href="#">How It Works</a>
+<a class="text-on-surface-variant font-label-md hover:text-primary transition-colors duration-300" href="#">About</a>
+</div>
+<div class="flex items-center gap-unit-md text-primary">
+<button class="hidden md:block hover:text-primary transition-colors duration-300 p-2 rounded-full hover:bg-surface-variant">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+<button class="md:hidden hover:text-primary transition-colors duration-300 p-2 rounded-full hover:bg-surface-variant" id="menu-btn">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+</div>
+</div>
+<!-- Mobile Menu -->
+<div class="absolute top-20 left-0 w-full bg-surface shadow-md flex-col gap-unit-md p-margin-mobile border-t border-outline-variant z-50" id="mobile-menu">
+<a class="text-primary font-label-md font-bold transition-all" href="#">Home</a>
+<a class="text-on-surface-variant font-label-md hover:text-primary transition-colors" href="#">Collections</a>
+<a class="text-on-surface-variant font-label-md hover:text-primary transition-colors" href="#">How It Works</a>
+<a class="text-on-surface-variant font-label-md hover:text-primary transition-colors" href="#">About</a>
+<a class="text-on-surface-variant font-label-md hover:text-primary transition-colors flex items-center gap-2" href="#">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span> Profile
+            </a>
+</div>
+</nav>
+<main class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop flex flex-col gap-unit-xl pb-unit-xl">
+<!-- Hero Section -->
+<section class="mt-unit-md md:mt-unit-xl flex flex-col md:flex-row gap-unit-xl items-start">
+<!-- Mobile: AI Stylist Card moves to top -->
+<div class="w-full md:w-1/2 relative flex justify-center items-center py-unit-md md:p-unit-xl order-first md:order-last">
+<div class="absolute inset-0 bg-tertiary-fixed rounded-full opacity-30 blur-3xl transform -translate-y-10 scale-90 z-0"></div>
+<div class="relative z-10 w-full max-w-sm ai-gradient-border glass-panel rounded-xl overflow-hidden ambient-shadow flex flex-col">
+<div class="h-64 bg-surface-container-lowest relative">
+<img class="object-cover w-full h-full object-top" data-alt="A portrait of a chic, fashionable virtual AI stylist avatar named LARA." onerror="this.src='https://lh3.googleusercontent.com/aida-public/AB6AXuC7s3WSZzVaNeGFfnK68VYJ066V-C8-LMqrNefgyEW21zJzwnqNnaGfCUeY_Ecez5G99iQ9HaOT02XpYwXD3YlqSYxyGAfWBtBEq6bryNsyT0AFd67t5tg1qfFX6axU7gvY1DvxlptEkjdoVda2AhcTsxrYv3afYGN8otNzIp1pi9DLXT0uQ5G6E_mMiWqV70CrYO6g1V27bUgYhKFFLeuvwWQSMWqgbTILfPt92Ooi2BfmjX1vy_UO'" src="https://www.gstatic.com/labs-code/stitch/stitch-placeholder-300x300.svg"/>
+</div>
+<div class="p-unit-lg bg-surface-container-lowest/80 backdrop-blur">
+<div class="flex items-center gap-unit-sm mb-unit-sm">
+<span class="material-symbols-outlined text-secondary" data-icon="smart_toy">smart_toy</span>
+<span class="text-label-md font-label-md text-primary tracking-widest uppercase">Virtual Stylist</span>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant italic">"Hi, I’m LARA. Tell me your style preferences and I’ll curate a look made for you."</p>
+</div>
+</div>
+</div>
+<!-- Form -->
+<div class="w-full md:w-1/2 flex flex-col gap-unit-lg md:pt-unit-md order-last md:order-first">
+<div>
+<h1 class="text-headline-lg-mobile md:text-display-lg font-display-lg text-primary mb-unit-sm leading-tight">LARA – Your AI Fashion Stylist</h1>
+<p class="text-body-md md:text-body-lg font-body-lg text-on-surface-variant max-w-lg">Find outfits that match your style, occasion and budget.</p>
+</div>
+<div class="bg-surface-bright rounded-xl p-unit-md md:p-unit-lg ambient-shadow border border-surface-variant">
+<form class="flex flex-col gap-unit-md">
+<div class="flex flex-col gap-unit-xs relative">
+<label class="text-label-sm font-label-sm text-on-surface-variant ml-2 absolute top-2 left-2 bg-tertiary-fixed px-1 rounded transition-all">Gender</label>
+<select class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg p-unit-md pt-unit-lg text-body-md font-body-md focus:border-secondary-fixed focus:ring-1 focus:ring-secondary-fixed outline-none appearance-none bg-transparent relative z-10">
+<option disabled="" selected="" value="">Select</option>
+<option>Women</option>
+<option>Men</option>
+<option>Unisex</option>
+</select>
+</div>
+<div class="flex flex-col gap-unit-xs relative">
+<label class="text-label-sm font-label-sm text-on-surface-variant ml-2 absolute top-2 left-2 bg-tertiary-fixed px-1 rounded transition-all">Skin Tone</label>
+<select class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg p-unit-md pt-unit-lg text-body-md font-body-md focus:border-secondary-fixed focus:ring-1 focus:ring-secondary-fixed outline-none appearance-none bg-transparent relative z-10">
+<option disabled="" selected="" value="">Select</option>
+<option>Fair</option>
+<option>Medium</option>
+<option>Olive</option>
+<option>Deep</option>
+</select>
+</div>
+<div class="flex flex-col gap-unit-xs relative">
+<label class="text-label-sm font-label-sm text-on-surface-variant ml-2 absolute top-2 left-2 bg-tertiary-fixed px-1 rounded transition-all">Body Shape</label>
+<select class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg p-unit-md pt-unit-lg text-body-md font-body-md focus:border-secondary-fixed focus:ring-1 focus:ring-secondary-fixed outline-none appearance-none bg-transparent relative z-10">
+<option disabled="" selected="" value="">Select</option>
+<option>Hourglass</option>
+<option>Pear</option>
+<option>Apple</option>
+<option>Rectangle</option>
+<option>Inverted Triangle</option>
+</select>
+</div>
+<div class="flex flex-col gap-unit-xs relative">
+<label class="text-label-sm font-label-sm text-on-surface-variant ml-2 absolute top-2 left-2 bg-tertiary-fixed px-1 rounded transition-all">Occasion</label>
+<select class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg p-unit-md pt-unit-lg text-body-md font-body-md focus:border-secondary-fixed focus:ring-1 focus:ring-secondary-fixed outline-none appearance-none bg-transparent relative z-10">
+<option disabled="" selected="" value="">Select</option>
+<option>Casual</option>
+<option>Office</option>
+<option>Party</option>
+<option>Wedding Guest</option>
+<option>Vacation</option>
+</select>
+</div>
+<div class="flex flex-col gap-unit-xs relative">
+<label class="text-label-sm font-label-sm text-on-surface-variant ml-2 absolute top-2 left-2 bg-tertiary-fixed px-1 rounded transition-all">Budget</label>
+<select class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg p-unit-md pt-unit-lg text-body-md font-body-md focus:border-secondary-fixed focus:ring-1 focus:ring-secondary-fixed outline-none appearance-none bg-transparent relative z-10">
+<option disabled="" selected="" value="">Select Range</option>
+<option>Under $100</option>
+<option>$100 - $250</option>
+<option>$250 - $500</option>
+<option>Premium ($500+)</option>
+</select>
+</div>
+<button class="mt-unit-sm w-full bg-primary-container text-on-primary py-unit-md rounded-lg font-label-md hover:opacity-90 transition-opacity" type="button">Find My Perfect Look</button>
+</form>
+</div>
+</div>
+</section>
+<!-- Trending Collections -->
+<section class="flex flex-col gap-unit-lg">
+<div class="flex justify-between items-end">
+<h2 class="text-headline-md md:text-headline-lg font-headline-lg text-primary">Trending Collections</h2>
+<a class="text-label-sm md:text-label-md font-label-md text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1" href="#">View All <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span></a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-unit-md">
+<div class="h-48 md:h-auto md:col-span-2 md:row-span-2 rounded-xl overflow-hidden relative group ambient-shadow cursor-pointer">
+<div class="bg-cover bg-center w-full h-full absolute inset-0 transition-transform duration-700 group-hover:scale-105" data-alt="Office Wear" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCUbzRaAx0WVXeNWP2J3WoIhXr2lHnF8wNXHleuANpw86gV3Btembk1MxozeaVTYByTYBhOi3JF2hGVGjCLg5Vem5kMo5xGRZo2_9jG543L0s-2AIg_wmByCKt0GuC7fOFtggyCNZqYhmTOETxdZE7BwiKHP1q2yTxhLwfChpX-5Gb5teuqiqGURf1UiZvO5i_z1E_V_tMhxVkGK_sQmFCCcoATxI-Oi3OILwDBKzE3bAPLSFXqP3hh')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-unit-md md:p-unit-lg">
+<h3 class="text-headline-md font-headline-md text-on-primary">Office Wear</h3>
+<p class="text-body-md font-body-md text-on-primary/80 mt-1">Elevate your daily hustle</p>
+</div>
+</div>
+<div class="h-40 md:h-auto md:col-span-1 md:row-span-1 rounded-xl overflow-hidden relative group ambient-shadow cursor-pointer">
+<div class="bg-cover bg-center w-full h-full absolute inset-0 transition-transform duration-700 group-hover:scale-105" data-alt="College Essentials" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDgryHGL5qgGGwWb6g9tQ674fCjrzayXeZSlNLKU_vPxrNWEL5jqyVGEmH6zvaPnNE7r5e9JshLQatnRCC5Z9HoVKilqg6c7j8GsTdW7t2lPyDzSP4jt4-c8n2i8HfVAfS643kMQ3_J5Gi5XLoJS9KLFX_0s1gZA2rHmLHCaV7Bilpy_Mn0HxwluSMgTAMMca2qye7JpsL-9j-rY3P0HE86PowsJ_p-I3uvj3kjxm7XsO3RxvXlFtXn')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-unit-md">
+<h3 class="text-label-md font-label-md text-on-primary">College Essentials</h3>
+</div>
+</div>
+<div class="h-40 md:h-auto md:col-span-1 md:row-span-1 rounded-xl overflow-hidden relative group ambient-shadow cursor-pointer">
+<div class="bg-cover bg-center w-full h-full absolute inset-0 transition-transform duration-700 group-hover:scale-105" data-alt="Casual Fits" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBlROKpj7dDSSoXYbUGOaZjVIIj45r1APe6LYFWBNdz9dWHYT3Lxa-ZW_F4CJsTs99A0juZQmt3nh-_IxTZHOKzNYv5tfQNVMVE57D0ynun6U2lpHXD7_YUIbZcAYGCoD38daSYLiOMTmksM1KcBQ8g0nYNl7OxICHhZFk0oaFVHH7Odi2uiybN-p4NWeEU7C2qLeapFnBlxo7XXuW5HGRW_85Fp7Y0-9zhn2tB_1IrR2K9vd8h80GR')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-unit-md">
+<h3 class="text-label-md font-label-md text-on-primary">Casual Fits</h3>
+</div>
+</div>
+<div class="h-40 md:h-auto md:col-span-1 md:row-span-1 rounded-xl overflow-hidden relative group ambient-shadow cursor-pointer">
+<div class="bg-cover bg-center w-full h-full absolute inset-0 transition-transform duration-700 group-hover:scale-105" data-alt="Party Looks" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDCyUM2vXETfMeKvOaYlWv2qPC6JU_YmwiwV7kECoDXrdRsMZYrdOJChYBesvTNtDDsaogOcQ6J-jFuoP4uOOVlsrB5Nnl2Xsh55bMJysYIMvf2eBj2ETvHCVpmeeU3dpzJbD6DO8oiNrEONpNTJH7eKoKKTLjwMuOrSH9D1ojF1eLDs7LGcF-yWO6YJ0qhIeev1EZebg_fQMFdXwjUnqr5iJBvk9hC6aFUL4ybpvGhEZLGe3QNDqTT')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-unit-md">
+<h3 class="text-label-md font-label-md text-on-primary">Party Looks</h3>
+</div>
+</div>
+<div class="h-48 md:h-auto md:col-span-1 md:row-span-1 rounded-xl overflow-hidden relative group ambient-shadow cursor-pointer">
+<div class="bg-cover bg-center w-full h-full absolute inset-0 transition-transform duration-700 group-hover:scale-105" data-alt="Festival Styles" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDu7BX6atFQ2szTWnvJ1hUn_-cK3yiz4aDQ0SabIoOXZA7R-0Dzf0q34kXJuQJWBSY78YH4hJyoVajH8ON2G_eV_3RBwcEVJMA-DscqoMiXG-Wiot_4Iwyi6Z68pLEpcy7uWSKBJ1FaC4uItmtROyaqPDiFYMr0n4wsVluIsjnEcU29uPECIhLyZHIF2nnf2XdirjlRZr0FLqhTvonmUfr-dHOVM0IRGf66vQEghugjReGeeFWgE-8g')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-unit-md">
+<h3 class="text-label-md font-label-md text-on-primary">Festival Styles</h3>
+</div>
+</div>
+</div>
+</section>
+<!-- How It Works -->
+<section class="py-unit-xl flex flex-col gap-unit-xl items-center text-center bg-surface-container-low rounded-xl px-unit-md md:px-unit-lg ambient-shadow">
+<h2 class="text-headline-md md:text-headline-lg font-headline-lg text-primary">How It Works</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-unit-xl w-full max-w-5xl">
+<div class="flex flex-col items-center gap-unit-md relative">
+<div class="w-16 h-16 rounded-full bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center text-headline-md font-headline-md font-bold z-10">1</div>
+<h4 class="text-headline-md font-headline-md text-primary">Tell us your preferences</h4>
+<p class="text-body-md font-body-md text-on-surface-variant">Input your style, body type, occasion, and budget to give LARA a starting point.</p>
+<div class="hidden md:block absolute top-8 left-1/2 w-full h-px bg-outline-variant -z-10"></div>
+</div>
+<div class="flex flex-col items-center gap-unit-md relative">
+<div class="w-16 h-16 rounded-full ai-gradient-border glass-panel flex items-center justify-center text-headline-md font-headline-md text-secondary font-bold z-10 bg-surface">2</div>
+<h4 class="text-headline-md font-headline-md text-primary">AI curates your look</h4>
+<p class="text-body-md font-body-md text-on-surface-variant">LARA analyzes thousands of premium pieces to build your perfect, personalized outfit.</p>
+<div class="hidden md:block absolute top-8 left-1/2 w-full h-px bg-outline-variant -z-10"></div>
+</div>
+<div class="flex flex-col items-center gap-unit-md relative">
+<div class="w-16 h-16 rounded-full bg-primary-container text-on-primary flex items-center justify-center text-headline-md font-headline-md font-bold z-10">3</div>
+<h4 class="text-headline-md font-headline-md text-primary">Shop your outfit</h4>
+<p class="text-body-md font-body-md text-on-surface-variant">Review the recommendations and purchase directly through our secure platform.</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container w-full py-unit-xl px-margin-mobile md:px-margin-desktop grid grid-cols-1 md:grid-cols-4 gap-gutter mt-auto transition-all duration-200 ease-in-out text-center md:text-left">
+<div class="col-span-1 flex flex-col gap-unit-sm items-center md:items-start mb-6 md:mb-0">
+<span class="text-headline-md font-headline-md font-bold text-primary">LARA</span>
+<p class="text-label-sm font-label-sm text-on-surface-variant mt-2">© 2024 LARA AI Fashion Advisor. All rights reserved.</p>
+</div>
+<div class="col-span-1 flex flex-col gap-unit-sm">
+<a class="text-on-surface-variant font-label-sm hover:text-primary underline-offset-4 hover:underline" href="#">Collections</a>
+<a class="text-on-surface-variant font-label-sm hover:text-primary underline-offset-4 hover:underline" href="#">Personal Stylist</a>
+<a class="text-on-surface-variant font-label-sm hover:text-primary underline-offset-4 hover:underline" href="#">How It Works</a>
+</div>
+<div class="col-span-1 flex flex-col gap-unit-sm">
+<a class="text-on-surface-variant font-label-sm hover:text-primary underline-offset-4 hover:underline" href="#">Sustainability</a>
+<a class="text-on-surface-variant font-label-sm hover:text-primary underline-offset-4 hover:underline" href="#">Privacy Policy</a>
+</div>
+</footer>
+<script>
+        // Simple script to handle select focus state visualization
+        const selects = document.querySelectorAll('select');
+        selects.forEach(select => {
+            select.addEventListener('focus', (e) => {
+                if(e.target.previousElementSibling) e.target.previousElementSibling.classList.add('text-secondary');
+            });
+            select.addEventListener('blur', (e) => {
+                if(e.target.previousElementSibling) e.target.previousElementSibling.classList.remove('text-secondary');
+            });
+        });
+
+        // Mobile menu toggle
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('open');
+        });
+    </script>
+</body></html>

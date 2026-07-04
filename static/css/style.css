@@ -1,0 +1,31 @@
+.glass-panel {
+    background: rgba(250, 249, 247, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(227, 226, 224, 0.5);
+}
+.ai-gradient-border {
+    position: relative;
+}
+.ai-gradient-border::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 2px;
+    background: linear-gradient(135deg, #d2bcfc, #f2e0c8);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+}
+.ambient-shadow {
+    box-shadow: 0 10px 40px rgba(26, 26, 46, 0.04);
+}
+
+#mobile-menu {
+    display: none;
+}
+#mobile-menu.open {
+    display: flex;
+}

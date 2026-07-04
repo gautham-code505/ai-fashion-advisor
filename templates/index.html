@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="mt-unit-md md:mt-unit-xl flex flex-col md:flex-row gap-unit-xl items-start">
+    <!-- Mobile: AI Stylist Card moves to top -->
+    <div class="w-full md:w-1/2 relative flex justify-center items-center py-unit-md md:p-unit-xl order-first md:order-last">
+        <div class="absolute inset-0 bg-tertiary-fixed rounded-full opacity-30 blur-3xl transform -translate-y-10 scale-90 z-0"></div>
+        <div class="relative z-10 w-full max-w-sm ai-gradient-border glass-panel rounded-xl overflow-hidden ambient-shadow flex flex-col">
+            <div class="h-64 bg-surface-container-lowest relative">
+                <img src="{{ url_for('static', filename='images/lara-avatar.png') }}" class="object-cover w-full h-full object-top" alt="LARA Avatar">
+            </div>
+            <div class="p-unit-lg bg-surface-container-lowest/80 backdrop-blur">
+                <div class="flex items-center gap-unit-sm mb-unit-sm">
+                    <span class="material-symbols-outlined text-secondary" data-icon="smart_toy">smart_toy</span>
+                    <span class="text-label-md font-label-md text-primary tracking-widest uppercase">Virtual Stylist</span>
+                </div>
+                <p class="text-body-md font-body-md text-on-surface-variant italic">"Hi, I’m LARA. Tell me your style preferences and I’ll curate a look made for you."</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Form -->
+    <div class="w-full md:w-1/2 flex flex-col gap-unit-lg md:pt-unit-md order-last md:order-first">
+        <div class="mb-unit-xl">
+            <h1 class="text-display-sm md:text-display-md font-display-md text-primary mb-2">Find your perfect <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">AI style</span></h1>
+            <p class="text-body-md md:text-body-lg font-body-lg text-on-surface-variant max-w-lg">Find outfits that match your style, occasion and budget.</p>
+        </div>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <div class="mb-4 space-y-2">
+            {% for category, message in messages %}
+              <div class="bg-error text-on-error p-3 rounded-lg text-body-md font-bold">
+                {{ message }}
+              </div>
+            {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        <div class="bg-surface-bright rounded-xl p-unit-md md:p-unit-lg ambient-shadow border border-surface-variant">
+            <form id="recommendation-form" class="flex flex-col gap-unit-md" action="{{ url_for('recommend') }}" method="POST">
+                <div class="flex flex-col gap-unit-xs relative">
+                    <label class="text-label-sm font-label-sm text-on-surface-variant ml-2 absolute top-2 left-2 bg-tertiary-fixed px-1 rounded transition-all">Gender</label>
+                    <select name="gender" class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg p-unit-md pt-unit-lg text-body-md font-body-md focus:border-secondary-fixed focus:ring-1 focus:ring-secondary-fixed outline-none appearance-none bg-transparent relative z-10" required>
+                        <option disabled selected value="">Select</option>
+                        <option value="Women">Women</option>
+                        <option value="Men">Men</option>
+                        <option value="Unisex">Unisex</option>
+                    </select>
+                </div>
+                <div class="flex flex-col gap-unit-xs relative">
+                    <label class="text-label-sm font-label-sm text-on-surface-variant ml-2 absolute top-2 left-2 bg-tertiary-fixed px-1 rounded transition-all">Skin Tone</label>
+                    <select name="skin_tone" class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg p-unit-md pt-unit-lg text-body-md font-body-md focus:border-secondary-fixed focus:ring-1 focus:ring-secondary-fixed outline-none appearance-none bg-transparent relative z-10" required>
+                        <option disabled selected value="">Select</option>
+                        <option value="Fair">Fair</option>
+                        <option value="Wheatish">Wheatish</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Olive">Olive</option>
+                        <option value="Dark">Dark</option>
+                        <option value="Deep">Deep</option>
+                    </select>
+                </div>
+                <div class="flex flex-col gap-unit-xs relative">
+                    <label class="text-label-sm font-label-sm text-on-surface-variant ml-2 absolute top-2 left-2 bg-tertiary-fixed px-1 rounded transition-all">Body Shape</label>
+                    <select name="body_shape" class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg p-unit-md pt-unit-lg text-body-md font-body-md focus:border-secondary-fixed focus:ring-1 focus:ring-secondary-fixed outline-none appearance-none bg-transparent relative z-10" required>
+                        <option disabled selected value="">Select</option>
+                        <option value="Hourglass">Hourglass</option>
+                        <option value="Pear">Pear</option>
+                        <option value="Apple">Apple</option>
+                        <option value="Rectangle">Rectangle</option>
+                        <option value="Inverted Triangle">Inverted Triangle</option>
+                    </select>
+                </div>
+                <div class="flex flex-col gap-unit-xs relative">
+                    <label class="text-label-sm font-label-sm text-on-surface-variant ml-2 absolute top-2 left-2 bg-tertiary-fixed px-1 rounded transition-all">Occasion</label>
+                    <select name="occasion" class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg p-unit-md pt-unit-lg text-body-md font-body-md focus:border-secondary-fixed focus:ring-1 focus:ring-secondary-fixed outline-none appearance-none bg-transparent relative z-10" required>
+                        <option disabled selected value="">Select</option>
+                        <option value="Casual">Casual</option>
+                        <option value="College">College</option>
+                        <option value="Office">Office</option>
+                        <option value="Party">Party</option>
+                        <option value="Festival">Festival</option>
+                        <option value="Wedding Guest">Wedding Guest</option>
+                        <option value="Vacation">Vacation</option>
+                    </select>
+                </div>
+                <div class="flex flex-col gap-unit-xs relative">
+                    <label class="text-label-sm font-label-sm text-on-surface-variant ml-2 absolute top-2 left-2 bg-tertiary-fixed px-1 rounded transition-all">Budget</label>
+                    <select name="budget" class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg p-unit-md pt-unit-lg text-body-md font-body-md focus:border-secondary-fixed focus:ring-1 focus:ring-secondary-fixed outline-none appearance-none bg-transparent relative z-10" required>
+                        <option disabled selected value="">Select Range</option>
+                        <option value="1500">Under ₹1500</option>
+                        <option value="3000">₹1500 - ₹3000</option>
+                        <option value="4000">₹3000 - ₹4000</option>
+                        <option value="5000">₹4000 - ₹5000</option>
+                        <option value="10000">Premium (₹5000+)</option>
+                    </select>
+                </div>
+                <button id="submit-btn" class="mt-unit-sm w-full bg-primary-container text-on-primary py-unit-md rounded-lg font-label-md hover:opacity-90 transition-opacity flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed" type="submit">
+                    <span id="submit-text">Find My Perfect Look</span>
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Trending Collections -->
+<section class="flex flex-col gap-unit-lg">
+    <div class="flex justify-between items-end">
+        <h2 class="text-headline-md md:text-headline-lg font-headline-lg text-primary">Trending Collections</h2>
+        <a class="text-label-sm md:text-label-md font-label-md text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1" href="#">View All <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span></a>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-unit-md">
+        {% for col in collections %}
+        <div class="{{ col.height_class }} {{ col.span_class }} rounded-xl overflow-hidden relative group ambient-shadow cursor-pointer">
+            <img src="{{ col.image_url }}" onerror="this.src='{{ url_for('static', filename='images/product-fallback.jpg') }}'" class="w-full h-full absolute inset-0 object-cover transition-transform duration-700 group-hover:scale-105" alt="{{ col.title }}">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 p-unit-md {% if col.subtitle %}md:p-unit-lg{% endif %}">
+                <h3 class="{{ col.title_class }}">{{ col.title }}</h3>
+                {% if col.subtitle %}
+                <p class="{{ col.subtitle_class }}">{{ col.subtitle }}</p>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- How It Works -->
+<section class="py-unit-xl flex flex-col gap-unit-xl items-center text-center bg-surface-container-low rounded-xl px-unit-md md:px-unit-lg ambient-shadow">
+    <h2 class="text-headline-md md:text-headline-lg font-headline-lg text-primary">How It Works</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-unit-xl w-full max-w-5xl">
+        <div class="flex flex-col items-center gap-unit-md relative">
+            <div class="w-16 h-16 rounded-full bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center text-headline-md font-headline-md font-bold z-10">1</div>
+            <h4 class="text-headline-md font-headline-md text-primary">Tell us your preferences</h4>
+            <p class="text-body-md font-body-md text-on-surface-variant">Input your style, body type, occasion, and budget to give LARA a starting point.</p>
+            <div class="hidden md:block absolute top-8 left-1/2 w-full h-px bg-outline-variant -z-10"></div>
+        </div>
+        <div class="flex flex-col items-center gap-unit-md relative">
+            <div class="w-16 h-16 rounded-full ai-gradient-border glass-panel flex items-center justify-center text-headline-md font-headline-md text-secondary font-bold z-10 bg-surface">2</div>
+            <h4 class="text-headline-md font-headline-md text-primary">AI curates your look</h4>
+            <p class="text-body-md font-body-md text-on-surface-variant">LARA analyzes thousands of premium pieces to build your perfect, personalized outfit.</p>
+            <div class="hidden md:block absolute top-8 left-1/2 w-full h-px bg-outline-variant -z-10"></div>
+        </div>
+        <div class="flex flex-col items-center gap-unit-md relative">
+            <div class="w-16 h-16 rounded-full bg-primary-container text-on-primary flex items-center justify-center text-headline-md font-headline-md font-bold z-10">3</div>
+            <h4 class="text-headline-md font-headline-md text-primary">Shop your outfit</h4>
+            <p class="text-body-md font-body-md text-on-surface-variant">Review the recommendations and purchase directly through our secure platform.</p>
+        </div>
+    </div>
+</section>
+{% endblock %}
